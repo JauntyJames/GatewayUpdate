@@ -1,0 +1,195 @@
+{
+	"info": {
+		"_postman_id": "a47fceae-a987-442d-996c-928eaca98d0a",
+		"name": "GatewayManagement",
+		"description": "# APIPCS Gateway management\n\n## Purpose\n\nThis API collection updates a deployed API Gateway with new user credentials.\n\n## Setup\n\n1. Set the collection variables. \n\n- {{Username}} should be set to the gateway runtime user. \n\n- {{Password}} should be set to that user's password. \n\n- {{IP}} should be set to the IP address of the instance where your gateway is deployed.\n\n- {{AppId}} should be set to the IDCS application ID\n\n- {{Secret}} should be set to the IDCS secret\n\n2. Obtain your auth token. In the Authorization tab, select \"Get New Access Token\". Leave the settings as they are and request a new token, then use it.\n\n## Send the API calls\n\n1. Send the \"Gateway Runtime\" request to update the gateway with the new user credentials\n\n2. Send the \"Poll\" request to force an update of the gateway, effectively checking the validity of the new credentials.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Gateway Runtime",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"gatewayRuntimeClientId\": {{AppId}},\n\t\"gatewayRuntimeClientSecret\": {{Secret}},\n\t\"gatewayRuntimePassword\": {{Password}},\n\t\"gatewayRuntimeUsername\": {{Username}}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{IP}}:8011/apiplatform/gatewaynode/v1/security/credentials",
+					"protocol": "http",
+					"host": [
+						"{{IP}}"
+					],
+					"port": "8011",
+					"path": [
+						"apiplatform",
+						"gatewaynode",
+						"v1",
+						"security",
+						"credentials"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Poll",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"gatewayRuntimeClientId\": {{AppId}},\n\t\"gatewayRuntimeClientSecret\": {{Secret}},\n\t\"gatewayRuntimePassword\": {{Password}},\n\t\"gatewayRuntimeUsername\": {{Username}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{IP}}:8011/apiplatform/gatewaynode/v1/config/poller/poll",
+					"protocol": "http",
+					"host": [
+						"{{IP}}"
+					],
+					"port": "8011",
+					"path": [
+						"apiplatform",
+						"gatewaynode",
+						"v1",
+						"config",
+						"poller",
+						"poll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Gateway",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"gatewayId\": \"103\",\n\t\"gatewayNodeName\": \"Prod Node 1\",\n\t\"managementUrl\": \"https://burlingtonapi-orasenatdpltintegration01.apiplatform.ocp.oraclecloud.com:7201\",\n\t\"tokenIssuerUrl\": \"https://idcs-4c88472bb4c2475aa6ddcfabc52af290.identity.oraclecloud.com\",\n\t\"gatewayRuntimeClientId\": {{AppId}},\n\t\"gatewayRuntimeClientSecret\": {{Secret}},\n\t\"gatewayRuntimeUsername\": {{Username}},\n\t\"gatewayRuntimePassword\": \"{{Password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{IP}}:8011/apiplatform/gatewaynode/v1/registration",
+					"protocol": "http",
+					"host": [
+						"{{IP}}"
+					],
+					"port": "8011",
+					"path": [
+						"apiplatform",
+						"gatewaynode",
+						"v1",
+						"registration"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "accessToken",
+				"value": "eyJ4NXQjUzI1NiI6Il9FcjI1ZUxXN1lHaW9qbF8ydXpFcGd4WTNQcTcxNXprejBjRlJER0pLNVUiLCJ4NXQiOiJZUU9VdUFaS2tDbmJLMjhjZVo4YklCZHNOc2ciLCJraWQiOiJTSUdOSU5HX0tFWSIsImFsZyI6IlJTMjU2In0.eyJ1c2VyX3R6IjoiQW1lcmljYVwvQ2hpY2FnbyIsInN1YiI6ImludGVncmF0aW9uLnVzZXIiLCJ1c2VyX2xvY2FsZSI6ImVuIiwidXNlci50ZW5hbnQubmFtZSI6ImlkY3MtNGM4ODQ3MmJiNGMyNDc1YWE2ZGRjZmFiYzUyYWYyOTAiLCJpc3MiOiJodHRwczpcL1wvaWRlbnRpdHkub3JhY2xlY2xvdWQuY29tXC8iLCJ1c2VyX3RlbmFudG5hbWUiOiJpZGNzLTRjODg0NzJiYjRjMjQ3NWFhNmRkY2ZhYmM1MmFmMjkwIiwiY2xpZW50X2lkIjoiOTBDNTc2MEYzQjU3NENGMzk0RkRENjJGQTRGNjE0QjhfQVBQSUQiLCJzdWJfdHlwZSI6InVzZXIiLCJzY29wZSI6Ii5hcGlwbGF0Zm9ybSIsImNsaWVudF90ZW5hbnRuYW1lIjoiaWRjcy00Yzg4NDcyYmI0YzI0NzVhYTZkZGNmYWJjNTJhZjI5MCIsInVzZXJfbGFuZyI6ImVuIiwiZXhwIjoxNTkyOTQzNzAwLCJpYXQiOjE1OTI5NDAxMDAsImNsaWVudF9ndWlkIjoiNzI1MTBjMWFjYzE5NGUyMjg2YTc5YjdiNTQwYmFmZWYiLCJjbGllbnRfbmFtZSI6IkFQSUNTQVVUT19CdXJsaW5ndG9uQVBJIiwidGVuYW50IjoiaWRjcy00Yzg4NDcyYmI0YzI0NzVhYTZkZGNmYWJjNTJhZjI5MCIsImp0aSI6ImNjYTk3MDdhLWVjN2YtNDNmZS1hYjBlLWQ3Y2NmZDEyODk4YyIsInVzZXJfZGlzcGxheW5hbWUiOiJJbnRlZ3JhdGlvbiBVc2VyIiwic3ViX21hcHBpbmdhdHRyIjoidXNlck5hbWUiLCJwcmltVGVuYW50Ijp0cnVlLCJ0b2tfdHlwZSI6IkFUIiwiY2FfZ3VpZCI6ImNhY2N0LTUyZjI0N2FhYTMwNzRjZjNiOTExZjYzNjY5MTU4NGY5IiwiYXVkIjpbInVybjpvcGM6bGJhYXM6bG9naWNhbGd1aWQ9OTBDNTc2MEYzQjU3NENGMzk0RkRENjJGQTRGNjE0QjgiLCJodHRwczpcL1wvOTBDNTc2MEYzQjU3NENGMzk0RkRENjJGQTRGNjE0QjguYXBpcGxhdGZvcm0ub2NwLm9yYWNsZWNsb3VkLmNvbTo0NDMiXSwidXNlcl9pZCI6IjI0ZDRmZjM1NDFmMzQyZTliMjY3NmM5NTIzNWYyZGQ2IiwidGVuYW50X2lzcyI6Imh0dHBzOlwvXC9pZGNzLTRjODg0NzJiYjRjMjQ3NWFhNmRkY2ZhYmM1MmFmMjkwLmlkZW50aXR5Lm9yYWNsZWNsb3VkLmNvbSJ9.aaArXlvQRGjcCt6Ll8xEk3qWRvLxaX_KR1SbRKK9UGgG1cqAPFUFw6YfOweOeoVh6Q2SmEAQDHsZzUBjVgUw01SWYlh6mSAQnaJg2ScKnf0Duue2Omw_fm8mctncr0ybD9VmuHZcOOS4igZbWeZDJfxhhPDy3hg5CauZaxUWLbuUPLrlopmbafFW1w2sELi3sBv6EEX0Ol021p5lGOvD_odLcDcFQmG1djTXhza7mSQchWUFPlO_G30WdyoIJPM-ShuG2KRXkFLTyuhMq6ogC8oqbPDNnknj2Lmyw9HM8Sk8TaGF5iAQM7rN1oH_ChOQ13MhJQ7AQap-1FVKohpfOA",
+				"type": "string"
+			},
+			{
+				"key": "tokenType",
+				"value": "Bearer",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "0f20f8a8-3a08-45c7-9afc-6f5ac0f844d5",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "0ff47c0c-7f3d-41fb-8bf5-b6c832a2d58d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "9647d2bd-f1ef-4736-b70d-189c73131e28",
+			"key": "IP",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "ba9824f1-27d7-45b2-8d1f-6d2dde2d2e5c",
+			"key": "Username",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "3a699970-954f-4d5b-8205-7fd0d54759d3",
+			"key": "AppId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "6dbd06ba-05ca-49e1-90b7-1faf09d9ef1a",
+			"key": "Password",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "ef0cf9b3-be9b-4556-b8eb-4f5c86fdcd40",
+			"key": "Secret",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
